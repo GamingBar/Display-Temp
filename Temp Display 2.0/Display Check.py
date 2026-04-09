@@ -9,14 +9,14 @@ import RPi.GPIO as GPIO
 # Zuordnung der GPIO Pins
 
 # ------------------------
-# Zuordnung Display
+# Zuordnung Display.
 #-------------------------
 LCD_RS = 40
 LCD_E = 37
-LCD_DATA4 = 38
-LCD_DATA5 = 35
-LCD_DATA6 = 36
-LCD_DATA7 = 33
+LCD_DATA4 = 38  #-
+LCD_DATA5 = 35  # | Pins zum Datenübertragen ans Display
+LCD_DATA6 = 36  # | Läuft mit 4 Bit (um Pins zu sparen)
+LCD_DATA7 = 33  #-
 
 LCD_WIDTH = 16         # Zeichen je Zeile
 LCD_LINE_1 = 0x80     # Adresse der ersten Display Zeile
@@ -38,7 +38,7 @@ Pin_Knopf = 22
 
 
 
-def lcd_send_byte(bits, mode):
+def lcd_send_byte(bits, mode):                        # Sendet die Infos ans Display (von 8 zu 4 Bit)
     # Pins auf LOW setzen
     GPIO.output(LCD_RS, mode)
     GPIO.output(LCD_DATA4, GPIO.LOW)
@@ -74,9 +74,9 @@ def lcd_send_byte(bits, mode):
     GPIO.output(LCD_E, GPIO.HIGH)  
     time.sleep(E_PULSE)
     GPIO.output(LCD_E, GPIO.LOW)  
-    time.sleep(E_DELAY)  
+    time.sleep(E_DELAY)
  
-def display_init():
+def display_init():                                   # Bereinigt das Display zum Start
     lcd_send_byte(0x33, LCD_CMD)
     lcd_send_byte(0x32, LCD_CMD)
     lcd_send_byte(0x28, LCD_CMD)
@@ -84,13 +84,13 @@ def display_init():
     lcd_send_byte(0x06, LCD_CMD)
     lcd_send_byte(0x01, LCD_CMD)  
  
-def lcd_message(message):
+def lcd_message(message):                             # Formatiert und sendet den Text an das Display.
     message = message.ljust(LCD_WIDTH," ")  
     for i in range(LCD_WIDTH):
       lcd_send_byte(ord(message[i]),LCD_CHR)
     
-if __name__ == '__main__':
-    # initialisieren
+if __name__ == '__main__':                            # Steuert den Ablauf zum Textsenden.
+    # initialisieren zur Pin und Datenzuordnung
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
     GPIO.setup(LCD_E, GPIO.OUT)
@@ -100,31 +100,31 @@ if __name__ == '__main__':
     GPIO.setup(LCD_DATA6, GPIO.OUT)
     GPIO.setup(LCD_DATA7, GPIO.OUT)
  
-    display_init()
+    display_init()                                   # Startet Routine zum Starten und bereinigen des Displays zum Start
  
     
-    lcd_send_byte(LCD_LINE_1, LCD_CMD)
-    lcd_message("Was geht")
-    lcd_send_byte(LCD_LINE_2, LCD_CMD)
-    lcd_message("mein Bester")
+    lcd_send_byte(LCD_LINE_1, LCD_CMD)               # Springe in die erste Zeile
+    lcd_message("Was geht")                          # Text der ersten Zeile
+    lcd_send_byte(LCD_LINE_2, LCD_CMD)               # Springe in die zweite Zeile
+    lcd_message("mein Bester")                       # Text der ersten Zeile
     
-    time.sleep(4)
+    # time.sleep(4)                                    
     
-    msg1 = "Ich mag"
-    msg2 = "Toastbrot"
-    for i in range(len(msg1)):
-        lcd_send_byte(LCD_LINE_1, LCD_CMD)
-        lcd_message(msg1[:i+1])
-        lcd_send_byte(LCD_LINE_2, LCD_CMD)
-        lcd_message("")
-        time.sleep(0.1)    
-    for i in range(len(msg2)):
-        lcd_send_byte(LCD_LINE_1, LCD_CMD)
-        lcd_message(msg1)
-        lcd_send_byte(LCD_LINE_2, LCD_CMD)
-        lcd_message(msg2[:i+1])
-        time.sleep(0.1)
+    # msg1 = "Ich mag"
+    # msg2 = "Toastbrot"
+    # for i in range(len(msg1)):
+    #     lcd_send_byte(LCD_LINE_1, LCD_CMD)
+    #     lcd_message(msg1[:i+1])
+    #     lcd_send_byte(LCD_LINE_2, LCD_CMD)
+    #     lcd_message("")
+    #     time.sleep(0.1)    
+    # for i in range(len(msg2)):
+    #     lcd_send_byte(LCD_LINE_1, LCD_CMD)
+    #     lcd_message(msg1)
+    #     lcd_send_byte(LCD_LINE_2, LCD_CMD)
+    #     lcd_message(msg2[:i+1])
+    #     time.sleep(0.1)
     
-    time.sleep(4)
+    # time.sleep(4)
     
-    GPIO.cleanup()
+    # GPIO.cleanup()
