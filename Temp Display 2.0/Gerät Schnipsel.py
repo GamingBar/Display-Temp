@@ -131,3 +131,20 @@ GPIO.setup(GREEN_PIN, GPIO.OUT)
 # LEDs als Ausgang verwenden
 GPIO.output(RED_PIN, GPIO.HIGH)     # LED an
 GPIO.output(GREEN_PIN, GPIO.LOW)    # LED aus
+
+#--------
+# Sensor
+#--------
+# Intergration des Sensors
+import dht11
+
+# Pin Belegung
+instance = dht11.DHT11(pin=12)
+
+# Werte zur Ausgabe
+
+print(f"Temp: {result.temperature:.1f} C")  # Beispiel für Temperatur
+print(f"Feucht: {result.humidity:.1f} %")   # Beispiel für Feuchtigkeit
+
+# Sensor benötigt etwas Zeit zum Empfangen von Daten
+# Für Fahrenheit muss via Code umgerechnet werden
