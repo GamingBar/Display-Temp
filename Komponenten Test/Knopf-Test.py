@@ -10,7 +10,7 @@ GPIO.setwarnings(False)
 #| Button Pin |
 #+------------+
 
-BUTTON_PIN = 20     # Pinbelegung
+BUTTON_PIN = 22     # Pinbelegung
 GPIO.setup(BUTTON_PIN, GPIO.IN)
 
 #+------------------+
