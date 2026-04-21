@@ -105,7 +105,7 @@ GPIO.setmode(GPIO.BOARD)
 #-------
 
 # Knopf Pins
-BUTTON_PIN = 20
+BUTTON_PIN = 22
 
 # Pin als Eingang festlegen
 GPIO.setup(BUTTON_PIN, GPIO.IN)
